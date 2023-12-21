@@ -4,23 +4,23 @@ const Tx = require('ethereumjs-tx').Transaction;
 const { ethers } = require('ethers');
 
 // Configuration
-const providerUrl = process.env.PROVIDER_URL;
 const privateKey = process.env.PRIVATE_KEY;
-if (!privateKey || !providerUrl) {
-    console.error('Please provide PRIVATE_KEY and PROVIDER_URL in .env file');
+if (!privateKey) {
+    console.error('Please provide PRIVATE_KEY in .env file');
     process.exit(1);
 }
-const tokenAddress = 'TOKEN_ADDRESS'; // Address of your ERC-20 token
+const tokenAddress = '0xc855dF1A5C8056887b63B983382dA81c901695d1'; // Address of your ERC-20 token
 const routerAddress = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'; // Uniswap V2 Router address for Goerli
-const amountTokenDesired = ethers.utils.parseUnits('100', '0'); // Amount of ERC-20 token desired to provide liquidity (in token's smallest units)
-const amountETHDesired = ethers.utils.parseEther('100'); // Amount of ETH desired to provide liquidity (in wei)
+const amountTokenDesired = 1000000000; // Amount of ERC-20 token desired to provide liquidity (in token's smallest units)
+const amountETHDesired = 1000000000; // Amount of ETH desired to provide liquidity (in wei)
 const deadline = Math.floor(Date.now() / 1000) + 60 * 20; // 20 minutes from now
 
 // Create Ethereum provider
-const web3 = new Web3(providerUrl);
+const infuraUrl = `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`;
+const provider = new ethers.providers.JsonRpcProvider(infuraUrl);
 
 // Create wallet instance
-const wallet = new ethers.Wallet(privateKey, web3);
+const wallet = new ethers.Wallet(privateKey, provider).connect(provider);
 
 // Create Uniswap V2 Router contract instance
 const router = new ethers.Contract(routerAddress, [
@@ -48,7 +48,7 @@ async function provideLiquidity() {
         amountETHMin,
         wallet.address,
         deadline,
-        { value: amountETHDesired, gasLimit: 3000000 }
+        { value: amountETHDesired, gasPrice: ethers.utils.parseUnits('10', 'gwei'), gasLimit: 3000000 }
     );
 
     console.log('Liquidity provision transaction:', tx.hash);
