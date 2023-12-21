@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "ethereumjs-tx": "^2.1.2",
+    "ethers": "^6.9.1",
+    "web3": "^4.3.0"
+  }
+}
