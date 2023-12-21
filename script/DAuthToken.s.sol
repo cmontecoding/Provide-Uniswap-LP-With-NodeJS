@@ -6,7 +6,7 @@ import {DAuthToken} from "../src/DAuthToken.sol";
 
 /**
  *
- * TESTNET DEPLOYMENT: Optimism Goerli
+ * TESTNET DEPLOYMENT: Ethereum Goerli
  *
  */
 
@@ -32,5 +32,5 @@ contract TestnetDeploy is Script {
  * > source .env
  *
  * To deploy and verify our contract
- * > forge script script/TestnetDeploy.s.sol:TestnetDeploy --rpc-url $ETHEREUM_GOERLI_RPC_URL --broadcast -vvvv
+ * > forge script script/DAuthToken.s.sol:TestnetDeploy --rpc-url $ETHEREUM_GOERLI_RPC_URL --broadcast -vvvv
  */
